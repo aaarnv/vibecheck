@@ -1,0 +1,40 @@
+.socials-container {
+    display: flex;
+    height: 100vh; /* Adjust based on your design */
+  }
+  
+  .socials-friends {
+    flex: 2;
+    padding: 20px;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+  }
+  
+  .socials-user {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  .vibe-entry {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .vibecheck-button {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .vibecheck-button:hover {
+    background-color: #0056b3;
+  }
+  

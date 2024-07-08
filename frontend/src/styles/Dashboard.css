@@ -1,0 +1,57 @@
+.dashboard-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+  
+.dashboard-left, .dashboard-middle, .dashboard-right {
+    width: 32%;
+    padding: 10px;
+    border-radius: 10px;
+}
+  
+.dashboard-left {
+    background-color: #f1f1f1;
+}
+  
+.dashboard-middle {
+    background-color: #ffffff;
+}
+  
+.dashboard-right {
+    background-color: #f1f1f1;
+}
+  
+.vibecheck-button {
+    display: block;
+    margin: 10px auto;
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
+.vibecheck-button:hover {
+    background-color: #0056b3;
+}
+  
+.mood-entry {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+  
+.social-link {
+    color: inherit; /* Inherit text color */
+    text-decoration: none; /* Remove underline */
+    cursor: pointer; /* Show pointer cursor on hover */
+    outline: none; /* Remove outline on focus */
+}
+  
+.social-link:hover {
+    text-decoration: none; /* Remove underline on hover */
+}

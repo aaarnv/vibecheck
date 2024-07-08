@@ -30,6 +30,7 @@ import Navbar from './components/Navbar';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Socials from './pages/Socials';
 
 const App = () => (
   <Router>
@@ -38,7 +39,9 @@ const App = () => (
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/" element={<h1>Welcome to Mood Tracker</h1>} />
+      <Route path="/socials" element={<Socials />} /> 
+      <Route path="/insights" element={<Dashboard />} /> 
+      <Route path="/" element={<Login />} />  
     </Routes>
   </Router>
 );
