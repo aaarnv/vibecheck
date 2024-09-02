@@ -31,6 +31,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Socials from './pages/Socials';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => (
   <Router>
@@ -38,10 +39,10 @@ const App = () => (
     <Routes>
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/socials" element={<Socials />} /> 
-      <Route path="/insights" element={<Dashboard />} /> 
-      <Route path="/" element={<Login />} />  
+      <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} />} />
+      <Route path="/socials" element={<ProtectedRoute element={Socials} />} />
+      <Route path="/insights" element={<ProtectedRoute element={Dashboard} />} />
+      <Route path="/" element={<Login />} />
     </Routes>
   </Router>
 );

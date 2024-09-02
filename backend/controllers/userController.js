@@ -26,11 +26,15 @@ async function userRegister(userId, email, password) {
 
 async function userLogin(email, password) {
     const user = await User.findOne({ email });
-    if (!user || user.password !== password) {
-        throw new Error('invalid credentials');
+    if (!user) {
+        throw new Error('invalid credentials user');
     }
-    return { message: 'User registered successfully' };
+    // Compare the plain text password with the hashed password in the database
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+       throw new Error('Invalid credentials');
+    }
+    return user;
 }
-
 
 module.exports = { userRegister, userLogin };

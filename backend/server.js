@@ -1,14 +1,21 @@
 const express = require('express');
+const session = require('express-session')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const session = require('express-session');
+
 require('dotenv').config();
+const userRoutes = require('./routes/UserRoutes');
+const vibeRoutes = require('./routes/VibeRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors());
+// CORS configuration
+app.use(cors({
+  origin: 'http://localhost:3000', // Replace with your frontend's origin
+  credentials: true
+}));
 app.use(bodyParser.json());
 
 // MongoDB connection
@@ -16,18 +23,16 @@ mongoose.connect(process.env.MONGO_URI, {})
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
-// Session middleware
+// Session configuration
 app.use(session({
-  secret: process.env.SESSION_SECRET, // Replace with your own secret key
+  secret: 'your-secret-key',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false }, // Set secure to true if using HTTPS
+  cookie: { secure: false, httpOnly: true, sameSite: 'lax' }
 }));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-const userRoutes = require('./routes/UserRoutes');
-const vibeRoutes = require('./routes/VibeRoutes');
-
 app.use('/api/users', userRoutes);
 app.use('/api', vibeRoutes);
+

@@ -16,12 +16,19 @@ const VibeCheck = ({ onSubmit, onClose }) => {
   };
 
   const handleAddVibe = (e) => {
-    const vibe = e.target.value;
-    if (vibe && !additionalVibes.includes(vibe)) {
-      setAdditionalVibes([...additionalVibes, vibe]);
+    const emotion = e.target.value;
+    if (emotion && !additionalVibes.find(vibe => vibe.emotion === emotion)) {
+      setAdditionalVibes([...additionalVibes, { emotion, value: 5 }]); // Default value set to 5
     }
     e.target.value = ''; // Reset the dropdown value
     setShowVibeDropdown(false); // Hide dropdown after selection
+  };
+
+  const handleVibeValueChange = (index, value) => {
+    const updatedVibes = additionalVibes.map((vibe, i) =>
+      i === index ? { ...vibe, value: value } : vibe
+    );
+    setAdditionalVibes(updatedVibes);
   };
 
   const handleNoteChange = (e) => {
@@ -34,12 +41,22 @@ const VibeCheck = ({ onSubmit, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({
+    
+    // Debug: Log the vibe data before submitting
+    console.log('Submitting vibe:', {
       mood,
       additionalVibes,
       note,
       share,
     });
+
+    onSubmit({
+      mood: parseInt(mood, 10), // Ensure mood is an integer
+      additionalVibes,
+      note,
+      share,
+    });
+
     // Reset form after submission
     setMood(5);
     setAdditionalVibes([]);
@@ -48,12 +65,12 @@ const VibeCheck = ({ onSubmit, onClose }) => {
     onClose();
   };
 
-  // Filter out already selected vibes from the dropdown options
-  const availableEmotions = emotions.filter(emotion => !additionalVibes.includes(emotion));
+  const availableEmotions = emotions.filter(emotion => !additionalVibes.find(vibe => vibe.emotion === emotion));
 
   return (
     <div className="vibecheck-overlay">
       <div className="vibecheck-container">
+        <span className="close-text" onClick={onClose}>×</span>
         <form onSubmit={handleSubmit}>
           <h2>vibecheck!</h2>
           <div className="mood-scale">
@@ -80,12 +97,14 @@ const VibeCheck = ({ onSubmit, onClose }) => {
             )}
             {additionalVibes.map((vibe, index) => (
               <div className="additional-vibe" key={index}>
-                <img src={`${vibe}.png`} alt={vibe} />
+                <img src={`${vibe.emotion}.png`} alt={vibe.emotion} />
                 <input
-                  name={vibe}
+                  name={vibe.emotion}
                   type="range"
                   min="0"
                   max="10"
+                  value={vibe.value}
+                  onChange={(e) => handleVibeValueChange(index, e.target.value)}
                 />
               </div>
             ))}
