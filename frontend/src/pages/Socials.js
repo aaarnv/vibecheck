@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getFriendsVibes, getFriendRequests, getFriends, searchUsers, sendFriendRequest, respondFriendRequest } from '../services/api';
+import { getFriendsVibes, getFriendRequests, getFriends, searchUsers, sendFriendRequest, respondFriendRequest, removeFriend } from '../services/api'; // Import removeFriend
 import '../styles/Socials.css';
 import FriendVibeEntry from '../components/FriendVibeEntry'; // Import the new component
 
@@ -31,7 +31,6 @@ const Socials = () => {
   const fetchFriends = async () => {
     try {
       const response = await getFriends();
-      console.log(response);
       setFriends(response);
     } catch (err) {
       console.error('Error fetching friends:', err.message);
@@ -55,13 +54,13 @@ const Socials = () => {
 
   const handleSendFriendRequest = async (id) => {
     try {
-      await sendFriendRequest(id);
+      const response = await sendFriendRequest(id);
       alert('Friend request sent!');
+      // Update state or perform any additional actions as needed
     } catch (err) {
-      console.error('Error sending friend request:', err.message);
+      alert(err.response.data.error);
     }
   };
-
   const handleRespondFriendRequest = async (id, response) => {
     try {
       await respondFriendRequest(id, response);
@@ -69,12 +68,23 @@ const Socials = () => {
       // Update the friend request list
       const updatedRequests = friendRequests.filter(req => req.from._id !== id);
       setFriendRequests(updatedRequests);
+      fetchFriendsVibes();
+      fetchFriendRequests();
+      fetchFriends();
     } catch (err) {
       console.error('Error responding to friend request:', err.message);
     }
-    fetchFriendsVibes();
-    fetchFriendRequests();
-    fetchFriends();
+  };
+
+  const handleRemoveFriend = async (friendId) => {
+    try {
+      await removeFriend(friendId);
+      // Update the friends list after removing a friend
+      fetchFriends();
+      fetchFriendsVibes();
+    } catch (err) {
+      console.error('Error removing friend:', err.message);
+    }
   };
 
   return (
@@ -129,10 +139,12 @@ const Socials = () => {
         <div className="socials-friends-list">
           <h2>Friends List</h2>
           {friends.length > 0 ? (
-            <ul>
+            <ul className="friends-list">
               {friends.map((friend) => (
-                <li key={friend}>
-                  {friend}
+                <li key={friend} className="friend-item">
+                  <span>{friend}</span>
+                  <button className="poke-button">🫵</button> {/* Placeholder for the poking emoji functionality */}
+                  <button className="remove-button" onClick={() => handleRemoveFriend(friend)}>❌</button>
                 </li>
               ))}
             </ul>
@@ -146,3 +158,4 @@ const Socials = () => {
 };
 
 export default Socials;
+

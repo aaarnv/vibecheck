@@ -108,12 +108,8 @@ export const searchUsers = async (query) => {
 };
 
 export const sendFriendRequest = async (id) => {
-  try {
     const response = await axios.post(`${API_URL}/users/${id}/friend-request`);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response.data.message);
-  }
+    return response;
 };
 
 export const respondFriendRequest = async (id, response) => {
@@ -128,6 +124,15 @@ export const respondFriendRequest = async (id, response) => {
 export const getFriends = async () => {
   try {
     const response = await axios.get(`${API_URL}/users/friends`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const removeFriend = async (friendId) => {
+  try {
+    const response = await axios.delete(`${API_URL}/users/friends/${friendId}`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

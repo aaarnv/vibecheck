@@ -63,6 +63,10 @@ router.post('/:id/friend-request', isAuthenticated, async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    if (sender.friends.includes(recipient.userId)) {
+      return res.status(400).json({ error: 'User is already a friend' });
+    }
+
     const alreadyRequested = recipient.friendRequests.some(
       (req) => req.from === sender.userId
     );
@@ -157,5 +161,41 @@ router.get('/friends', isAuthenticated, async (req, res) => {
   }
 });
 
+// DELETE route to remove a friend
+router.delete('/friends/:friendId', isAuthenticated, async (req, res) => {
+  try {
+    const { friendId } = req.params;
+    const userId = req.session.userId;
+
+    // Find the authenticated user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check if the friendId is in the user's friends list
+    if (!user.friends.includes(friendId)) {
+      return res.status(400).json({ error: 'Friend not found in the friends list' });
+    }
+
+    // Remove the friendId from the friends list
+    user.friends = user.friends.filter(friend => friend !== friendId);
+
+    // Save the updated user record
+    await user.save();
+
+    const friend = await User.findOne({ userId: friendId });
+    if (!friend) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    friend.friends = friend.friends.filter(friend => friend !== user.userId);
+    await friend.save();
+
+    res.json({ message: 'Friend removed successfully' });
+  } catch (err) {
+    console.error('Error removing friend:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;

@@ -9,4 +9,4 @@ async function vibeGet(email, password) {
 }
 
 
-module.exports = { userRegister, userLogin };
+module.exports = { vibeGet };

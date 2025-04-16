@@ -125,12 +125,15 @@ router.get('/vibes/friends', isAuthenticated, async (req, res) => {
     // Extract friends' userIds
     const friendObjectIds = await convertUserIdsToObjectIds(user.friends);
     //.map(friend => friend.userId);
-    console.log(friendObjectIds);
-    // Find the vibes for all friends
-    const friendsVibes = await Vibe.find({ userId: { $in: friendObjectIds } }).populate('userId', 'userId');
+
+    // Find the vibes for all friends where 'share' is true
+    const friendsVibes = await Vibe.find({
+      userId: { $in: friendObjectIds },
+      share: true,
+    }).populate('userId', 'userId').sort({ createdAt: -1 });;
 
     console.log(friendsVibes);
-    // Respond with the friends' vibes
+
     res.json(friendsVibes);
   } catch (err) {
     console.error('Error fetching friends\' vibes:', err);
