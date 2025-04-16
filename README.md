@@ -1,4 +1,5 @@
-VibeCheck
+**VibeCheck**
+
 VibeCheck is a social mood-tracking application that allows users to log their emotional states, share vibes with friends, and visualize their happiness trends over time. Users can register, log in, send friend requests, and view shared vibes from their network.
 ![VibeCheck Screenshot](/image.png)
 ![VibeCheck Screenshot](/dash.png)
